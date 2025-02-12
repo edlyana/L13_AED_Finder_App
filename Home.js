@@ -1,5 +1,7 @@
 import React,{useState, useEffect} from 'react';
-import { FlatList, StatusBar, Text, TextInput, View, StyleSheet, TouchableOpacity} from 'react-native';
+import { FlatList, StatusBar, Text, TextInput, View, StyleSheet, TouchableOpacity } from 'react-native';
+import RNPickerSelect from 'react-native-picker-select';
+import {Audio} from "expo-av";
 
 const styles = StyleSheet.create({
     container: {
@@ -61,6 +63,15 @@ let originalData= [];
 
 const Home = ({navigation}) => {
     const [myData, setMyData] = useState([]);
+    const [category, setCategory] = useState(null);
+    const [mySound, setMySound] = useState();
+
+    async function playSound() {
+        const soundfile = require('./wooshSound.wav');
+        const {sound} = await Audio.Sound.createAsync(soundfile);
+        setMySound(sound);
+        await sound.playAsync();
+    }
 
     // ADD USEEFFECT() - Exercise 1B
     useEffect(() => {
@@ -92,10 +103,18 @@ const Home = ({navigation}) => {
         }
     }
 
-    const renderItem = ({item, index}) => {
+    const renderItem = ({item}) => {
+
+        if (category === 'Available1' && !item.Location_Description.includes("During Dual Use Scheme Operating Hours")) {
+            return null;
+        }
+        if (category === 'Available2' && !item.Location_Description.includes("During School Operating Hours")) {
+            return null;
+        }
 
         return (
             <TouchableOpacity style={styles.opacityStyle} onPress={() => {
+                playSound();
                 navigation.navigate("MoreDetails", {item});
             }}>
                 <View style={styles.container}>
@@ -112,6 +131,19 @@ const Home = ({navigation}) => {
             <Text style={{padding:3, fontSize:22, fontWeight:'bold', color:'#0A8754', textAlign:'center'}}>AED Finder</Text>
             <Text style={{fontSize:15, fontWeight:'bold', margin: 5}}>Search AED:</Text>
             <TextInput style={styles.searchStyle} placeholder='Enter a location' onChangeText={(text) => {FilterData(text)}}/>
+
+            <View style={{ backgroundColor: 'white',}}>
+                <Text style={{fontSize:15, fontWeight:'bold', margin: 5, paddingTop:10}}>Availability By:</Text>
+                <RNPickerSelect
+                    value={category}
+                    onValueChange={(value) => setCategory(value)}
+                    items={[
+                        {label:"During Dual Use Scheme Operating Hours", value:"Available1"},
+                        {label:"During School Operating Hours", value:"Available2"},
+                    ]}
+                />
+            </View>
+
             <FlatList data={myData} renderItem={renderItem} />
         </View>
     );
