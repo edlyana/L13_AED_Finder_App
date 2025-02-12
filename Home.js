@@ -14,8 +14,8 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         padding: 15,
         margin: 10,
-        borderColor: '#368F8B',
-        borderStyle: 'dashed',
+        borderColor: '#9A031E',
+        borderStyle: 'dotted',
     },
     content: {
         padding: 5,
@@ -24,7 +24,7 @@ const styles = StyleSheet.create({
         fontSize: 16,
         justifyContent: 'center',
     },
-    contentCountry:{
+    contentName:{
         padding: 5,
         fontSize: 20,
         textAlign: 'center',
@@ -37,7 +37,7 @@ const styles = StyleSheet.create({
     },
     searchContainer:{
         padding: 15,
-        backgroundColor: '#EEF5DB',
+        backgroundColor: '#E8F1F2',
     },
     searchStyle:{
         borderWidth:1,
@@ -54,7 +54,7 @@ const styles = StyleSheet.create({
         marginRight: 5,
         flex: 1,
         flexDirection: 'row',
-        backgroundColor: '#EEF5DB',
+        backgroundColor: '#E8F1F2',
         opacity: 1,
     },
 })
@@ -118,7 +118,7 @@ const Home = ({navigation}) => {
                 navigation.navigate("MoreDetails", {item});
             }}>
                 <View style={styles.container}>
-                    <Text style={styles.contentCountry}>{item.Building_Name}</Text>
+                    <Text style={styles.contentName}>{item.Building_Name}</Text>
                     <Text style={styles.content}>Location: {item.Location_Description}</Text>
                 </View>
             </TouchableOpacity>
@@ -128,12 +128,12 @@ const Home = ({navigation}) => {
     return (
         <View style={styles.searchContainer}>
             <StatusBar/>
-            <Text style={{padding:3, fontSize:22, fontWeight:'bold', color:'#0A8754', textAlign:'center'}}>AED Finder</Text>
+            <Text style={{padding:3, fontSize:22, fontWeight:'bold', color:'#9A031E', textAlign:'center'}}>AED Finder</Text>
             <Text style={{fontSize:15, fontWeight:'bold', margin: 5}}>Search AED:</Text>
             <TextInput style={styles.searchStyle} placeholder='Enter a location' onChangeText={(text) => {FilterData(text)}}/>
 
-            <View style={{ backgroundColor: 'white',}}>
-                <Text style={{fontSize:15, fontWeight:'bold', margin: 5, paddingTop:10}}>Availability By:</Text>
+            <View>
+                <Text style={{fontSize:15, fontWeight:'bold', margin: 5, backgroundColor: '#D3DEE0', borderRadius:5, padding:3}}>Availability:</Text>
                 <RNPickerSelect
                     value={category}
                     onValueChange={(value) => setCategory(value)}
